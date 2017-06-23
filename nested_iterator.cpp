@@ -97,7 +97,6 @@ class NestedIterator {
 
 int main() {
     cout << "hello world" << endl;
-    
 }
 
 /**
