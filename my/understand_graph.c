@@ -49,7 +49,7 @@ graph_t create_graph(int **edge,int size) {
     for (i=0;i<size;i++) {
         adj_node = g->Adj[i];
         for (j=0;j<size;j++) {
-            if (edge[i][j] == 1) {
+            if (*((int *)edge+i*size+j)  == 1) {
                 adj_node = malloc(sizeof(*adj_node));
                 adj_node->v = &g->V[j];
                 adj_node->next = NULL;
@@ -98,6 +98,7 @@ void _graph_dfs_travel(vertex_t u,adjoin_node_t *adj_list,void (*visit)(vertex_t
     while (adj_node != NULL) {
         if (adj_node->v->color == 0) {
             adj_node->v->pi = u;
+            adj_node->v->color = 1;
             _graph_dfs_travel(adj_node->v,adj_list,visit);
         }
         adj_node = adj_node->next;
@@ -121,6 +122,7 @@ void graph_dfs_travel(const graph_t g,void (*visit)(vertex_t v)) {
     i = 0;
     for (;i<size;i++) {
         if (g->V[i].color == 0) {
+            g->V[i].pi = &g->V[i];
             _graph_dfs_travel(&g->V[i],g->Adj,visit);
         }
     }
@@ -128,12 +130,11 @@ void graph_dfs_travel(const graph_t g,void (*visit)(vertex_t v)) {
 
 void p(vertex_t v) {
     if (v != NULL) {
-        printf("val:%d,stime:%d,etime:%d\n",v->no,v->d,v->f);
+        printf("val:%d,stime:%d,etime:%d <- pi:[%d] \n",v->no,v->d,v->f,v->pi->no);
     }
 }
 
 int main() {
-    printf("hello world\n");
     int size = 5;
     int edge[5][5] = {  
         {0,1, 0, 0, 1},  
@@ -142,6 +143,8 @@ int main() {
         {0, 1, 1, 0,1},  
         {1, 1, 0, 1,0}  
     };  
+
+    int i = edge[0][0];
 
     graph_t g = create_graph((int **)edge,size);
     graph_dfs_travel(g,p);
