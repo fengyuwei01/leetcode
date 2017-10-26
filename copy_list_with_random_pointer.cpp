@@ -2,6 +2,7 @@
 // 向量
 #include<vector>
 #include<map>
+using namespace std;
 
 // https://leetcode.com/problems/copy-list-with-random-pointer/#/description
 

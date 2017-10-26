@@ -17,11 +17,11 @@ void printArray(vector<vector<int> > &arr,int m,int n) {
     std::cout << std::endl;
 }
 
-void printArray(vector<int> &arr,int m) {
+void printArray1(vector<int> &arr,int m) {
     std::cout << std::endl;
     std::cout << "---------------------arr-------------------" << std::endl;
     for (int i=0;i<m;i++) {
-        std::cout << arr[m] << " ";
+        std::cout << arr[i] << " ";
     }
     std::cout << std::endl;
     std::cout << "------------------------------------------" << std::endl;
@@ -43,8 +43,6 @@ int minSteps(int n) {
                 D[i][j] = MIN[i/2]+2;
             }
 
-            std::cout << "i:" << i << ",j:" << j << ",D:" << D[i][j] << std::endl;
-
             if (MIN[i] < 0 || D[i][j] < MIN[i]) { 
                 MIN[i] = D[i][j]; 
             }
@@ -53,18 +51,31 @@ int minSteps(int n) {
 
     printArray(D,n+1,m+1);
 
-    for(int i=0;i<=n;i++) {
-        std::cout << MIN[i] << std::endl;
-    }
+   // printArray1(MIN,n+1);
 
-    printArray(MIN,n+1);
+    return MIN[n];
+}
+
+// D[i] = D[j] + i/j && i%j==0
+int minSteps1(int n) {
+    vector<int> MIN(n+1,0);
+    for (int i=2;i<=n;i++) {
+        MIN[i] = i;
+        for (int j=i-1;j>1;j--) {
+            if (i%j == 0) {
+                MIN[i] = MIN[j] + i/j;
+                break;
+            }
+        }
+    }
 
     return MIN[n];
 }
 
 int main() {
-    int n = 4;
+    int n = 10;
 
-    //minSteps(n);
-    vector<int> vect(10,2);
+    int r = minSteps(n);
+
+    std::cout << "result:" << r << std::endl;
 }
